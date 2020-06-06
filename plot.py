@@ -5,16 +5,18 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import requests
 
-x = requests.head("https://raw.githubusercontent.com/datasets/covid-19/master/data/time-series-19-covid-combined.csv")
+url = "https://raw.githubusercontent.com/datasets/covid-19/master/data/time-series-19-covid-combined.csv"
+
+x = requests.head(url)
 new_length = int(x.headers["Content-Length"])
 f = open(Path.cwd() / "covid-stats" / "temp", "r")
 old_length = int(f.readline())
 
 if old_length < new_length:
-    print("updated: new length =" + str(new_length) + ", old length = " + str(old_length))
+    print("stats updated: new length = " + str(new_length) + ", old length = " + str(old_length))
     f = open(Path.cwd() / "covid-stats" / "temp", "w")
     f.write(str(new_length))
-    r = requests.get("https://raw.githubusercontent.com/datasets/covid-19/master/data/time-series-19-covid-combined.csv")
+    r = requests.get("url")
     with open(Path.cwd() / "covid-stats" / "time-series-19-covid-combined.csv", "wb") as f:
         f.write(r.content)
 else:
